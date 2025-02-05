@@ -1,6 +1,8 @@
 # php-clientify
 PHP common client adapters library.
 
+![lighting](https://github.com/user-attachments/assets/e06eeae2-55f9-4abb-9a9b-3dac22c68d8f)
+
 [Icon by Freepik - Flaticon](https://www.flaticon.com/free-icons/builder)
 
 ## Why this library?
