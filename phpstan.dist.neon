@@ -1,0 +1,30 @@
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-symfony/rules.neon
+
+parameters:
+    phpVersion: 80200
+    level: 9
+    checkMaybeUndefinedVariables: true
+    checkNullables: true
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        -
+            identifier: if.alwaysFalse
+        -
+            identifier: identical.alwaysFalse
+    paths:
+        - src/
+    exceptions:
+        check:
+            missingCheckedExceptionInThrows: true
+            tooWideThrowType: true
+        implicitThrows: true
+        uncheckedExceptionClasses:
+            - 'LogicException'
+            - 'PHPUnit\Framework\ExpectationFailedException'
+            - 'PHPUnit\Framework\TestFailure'
+    tmpDir: .phpstan.cache/
+    excludePaths:
+        - vendor/
+        - tests/
