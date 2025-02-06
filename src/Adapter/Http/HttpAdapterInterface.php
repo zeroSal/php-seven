@@ -70,4 +70,8 @@ interface HttpAdapterInterface
     public function getAuthorization(): ?HttpAuthentication;
 
     public function setAuthorization(?HttpAuthentication $authentication): void;
+
+    public function doesThrowOnError(): bool;
+
+    public function setThrowOnError(bool $throwOnError): void;
 }
