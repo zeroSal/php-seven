@@ -24,6 +24,7 @@ class HttpAdapter implements HttpAdapterInterface
     private int $timeout = 0;
     private bool $verify = false;
     private ?string $baseUri = null;
+    private bool $throwOnError = false;
 
     public function __construct(
         private Client $client,
@@ -74,6 +75,7 @@ class HttpAdapter implements HttpAdapterInterface
                 'verify' => $this->verify,
                 'timeout' => $this->timeout,
                 'headers' => $headers,
+                'http_errors' => $this->throwOnError
             ]
         );
 
@@ -284,5 +286,15 @@ class HttpAdapter implements HttpAdapterInterface
     public function setAuthorization(?HttpAuthentication $authentication): void
     {
         $this->authentication = $authentication;
+    }
+
+    public function doesThrowOnError(): bool
+    {
+        return $this->throwOnError;
+    }
+
+    public function setThrowOnError(bool $throwOnError): void
+    {
+        $this->throwOnError = $throwOnError;
     }
 }
