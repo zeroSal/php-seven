@@ -9,6 +9,11 @@ PHP common client adapters library.
 
 This library speeds up developing of clients via common communication protocols such as `SSH` and `HTTP`, providing `ready-to-use` and `dependency-injection-friendly` adapters.
 
+## Installation
+```bash
+composer require sal/php-clientify
+```
+
 ## Usage
 ```php
 class MyAwesomeClient
