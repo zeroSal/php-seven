@@ -74,4 +74,19 @@ interface HttpAdapterInterface
     public function doesThrowOnError(): bool;
 
     public function setThrowOnError(bool $throwOnError): void;
+
+    /**
+     * @param string[] $list A list of CURL strict resolving maps in <host>:<port>:<ip> format (e.g. 'me.hostname.tld:443:192.168.100.1)
+     */
+    public function setStrictResolveList(array $list): void;
+
+    /**
+     * @return ?string[] The list of CURL strict resolving maps in <host>:<port>:<ip> format (e.g. 'me.hostname.tld:443:192.168.100.1)
+     */
+    public function getStrictResolveList(): ?array;
+
+    /**
+     * Forces CURL to resolve the host provided to the IP given when connecting to the port set.
+     */
+    public function addStrictResolve(string $host, int $port, string $ip): void;
 }

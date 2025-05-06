@@ -26,6 +26,9 @@ class HttpAdapter implements HttpAdapterInterface
     private ?string $baseUri = null;
     private bool $throwOnError = false;
 
+    /** @var ?string[] */
+    private ?array $strictResolveList = null;
+
     public function __construct(
         private Client $client,
     ) {
@@ -78,6 +81,14 @@ class HttpAdapter implements HttpAdapterInterface
                 'http_errors' => $this->throwOnError
             ]
         );
+
+        if (null !== $this->strictResolveList) {
+            $options = array_merge(
+                $options, [
+                    'curl' => [CURLOPT_RESOLVE => $this->strictResolveList]
+                ]
+            );
+        }
 
         return $options;
     }
@@ -296,5 +307,29 @@ class HttpAdapter implements HttpAdapterInterface
     public function setThrowOnError(bool $throwOnError): void
     {
         $this->throwOnError = $throwOnError;
+    }
+
+    /**
+     * @param string[] $list A list of CURL strict resolving maps in <host>:<port>:<ip> format (e.g. 'me.hostname.tld:443:192.168.100.1)
+     */
+    public function setStrictResolveList(array $list): void
+    {
+        $this->strictResolveList = $list;
+    }
+
+    /**
+     * @return ?string[] The list of CURL strict resolving maps in <host>:<port>:<ip> format (e.g. 'me.hostname.tld:443:192.168.100.1)
+     */
+    public function getStrictResolveList(): ?array
+    {
+        return $this->strictResolveList;
+    }
+
+    /**
+     * Forces CURL to resolve the host provided to the IP given when connecting to the port set.
+     */
+    public function addStrictResolve(string $host, int $port, string $ip): void
+    {
+        $this->strictResolveList[] = "{$host}:{$port}:{$ip}";
     }
 }
