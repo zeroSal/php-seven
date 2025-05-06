@@ -84,7 +84,8 @@ class HttpAdapter implements HttpAdapterInterface
 
         if (null !== $this->strictResolveList) {
             $options = array_merge(
-                $options, [
+                $options,
+                [
                     'curl' => [CURLOPT_RESOLVE => $this->strictResolveList]
                 ]
             );
