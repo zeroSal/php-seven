@@ -6,8 +6,9 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * @author Luca Saladino <sal65535@protonmail.com>
+ * @final
  */
-final class HttpResponse
+class HttpResponse
 {
     public function __construct(
         private int $statusCode = 0,
