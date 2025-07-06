@@ -6,6 +6,7 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * @author Luca Saladino <sal65535@protonmail.com>
+ *
  * @final
  */
 class HttpResponse

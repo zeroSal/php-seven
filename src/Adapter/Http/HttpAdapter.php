@@ -4,7 +4,6 @@ namespace Sal\Clientify\Adapter\Http;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use LogicException;
 use Sal\Clientify\Model\Http\Authentication\HttpAuthentication;
 use Sal\Clientify\Model\Http\Authentication\HttpAuthenticationType;
 use Sal\Clientify\Model\Http\Authentication\HttpBasicAuthentication;
@@ -18,7 +17,7 @@ use Sal\Clientify\Model\Http\HttpResponse;
  */
 class HttpAdapter implements HttpAdapterInterface
 {
-    /** @var HttpHeader[] $headers */
+    /** @var HttpHeader[] */
     private array $headers = [];
     private ?HttpAuthentication $authentication = null;
     private int $timeout = 0;
@@ -78,7 +77,7 @@ class HttpAdapter implements HttpAdapterInterface
                 'verify' => $this->verify,
                 'timeout' => $this->timeout,
                 'headers' => $headers,
-                'http_errors' => $this->throwOnError
+                'http_errors' => $this->throwOnError,
             ]
         );
 
@@ -86,7 +85,7 @@ class HttpAdapter implements HttpAdapterInterface
             $options = array_merge(
                 $options,
                 [
-                    'curl' => [CURLOPT_RESOLVE => $this->strictResolveList]
+                    'curl' => [CURLOPT_RESOLVE => $this->strictResolveList],
                 ]
             );
         }
@@ -117,7 +116,7 @@ class HttpAdapter implements HttpAdapterInterface
     public function post(string $uri, array $parameters = [], ?string $json = null): HttpResponse
     {
         if (!empty($parameters) and null !== $json) {
-            throw new LogicException('The body must be provided as parameters or JSON. Not both.');
+            throw new \LogicException('The body must be provided as parameters or JSON. Not both.');
         }
 
         $uri = empty($this->baseUri) ? $uri : "{$this->baseUri}{$uri}";
@@ -170,7 +169,7 @@ class HttpAdapter implements HttpAdapterInterface
     public function put(string $uri, array $parameters = [], ?string $json = null): HttpResponse
     {
         if (!empty($parameters) and null !== $json) {
-            throw new LogicException('The body must be provided as parameters or JSON. Not both.');
+            throw new \LogicException('The body must be provided as parameters or JSON. Not both.');
         }
 
         $uri = empty($this->baseUri) ? $uri : "{$this->baseUri}{$uri}";

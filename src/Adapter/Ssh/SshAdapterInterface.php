@@ -2,8 +2,6 @@
 
 namespace Sal\Clientify\Adapter\Ssh;
 
-use Closure;
-use RuntimeException;
 use Sal\Clientify\Model\CommandResult;
 use Sal\Clientify\Model\File;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
@@ -35,16 +33,16 @@ interface SshAdapterInterface
      *
      * @param mixed[] $command
      *
-     * @throws RuntimeException
-     * @throws ProcessTimedOutException
-     *
      * @return CommandResult the command result
+     *
+     * @throws \RuntimeException
+     * @throws ProcessTimedOutException
      */
     public function runCommand(
         array $command,
         ?string $pipedInput = null,
         ?int $timeout = null,
-        ?Closure $outCallback = null
+        ?\Closure $outCallback = null,
     ): CommandResult;
 
     /**
@@ -52,13 +50,13 @@ interface SshAdapterInterface
      * If the timeout is null, then no timeout is set to the upload process.
      * Executes: scp -o <options> $sourceFilePath user@host:$destinationFolder.
      *
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @throws ProcessTimedOutException
      */
     public function secureCopyFileUpload(
         string $sourceFilePath,
         string $destinationFolder = '/tmp',
-        ?int $timeout = null
+        ?int $timeout = null,
     ): File;
 
     /**
@@ -66,13 +64,13 @@ interface SshAdapterInterface
      * If the timeout is null, then no timeout is set to the download process.
      * Executes: scp -o <options> user@host:$sourceFilePath $destinationFolder.
      *
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @throws ProcessTimedOutException
      */
     public function secureCopyFileDownload(
         string $sourceFilePath,
         string $destinationFolder = '/tmp/',
-        ?int $timeout = null
+        ?int $timeout = null,
     ): void;
 
     /**

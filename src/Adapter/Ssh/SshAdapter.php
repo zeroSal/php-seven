@@ -2,15 +2,11 @@
 
 namespace Sal\Clientify\Adapter\Ssh;
 
-use Closure;
-use InvalidArgumentException;
 use Sal\Clientify\Model\CommandResult;
 use Sal\Clientify\Model\File;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Exception\RuntimeException;
 use Symfony\Component\Process\Process;
-
-use function strval;
 
 /**
  * @author Luca Saladino <sal65535@protonmail.com>
@@ -50,7 +46,7 @@ class SshAdapter implements SshAdapterInterface
     {
         $this->timeout = $timeout;
 
-        $strTimeout = null !== $timeout ? strval($timeout) : '0';
+        $strTimeout = null !== $timeout ? \strval($timeout) : '0';
         $this->addOption('ConnectTimeout='.$strTimeout);
     }
 
@@ -80,7 +76,7 @@ class SshAdapter implements SshAdapterInterface
     public function secureCopyFileDownload(
         string $sourceFilePath,
         string $destinationFolder = '/tmp/',
-        ?int $timeout = null
+        ?int $timeout = null,
     ): void {
         $commandLine = array_merge(
             ['scp'],
@@ -108,10 +104,10 @@ class SshAdapter implements SshAdapterInterface
     public function secureCopyFileUpload(
         string $sourceFilePath,
         string $destinationFolder = '/tmp',
-        ?int $timeout = null
+        ?int $timeout = null,
     ): File {
         if ('/' === substr($destinationFolder, -1)) {
-            throw new InvalidArgumentException('The destination folder path cannot end with a slash.');
+            throw new \InvalidArgumentException('The destination folder path cannot end with a slash.');
         }
 
         if (!file_exists($sourceFilePath)) {
@@ -156,16 +152,16 @@ class SshAdapter implements SshAdapterInterface
      *
      * @param mixed[] $command
      *
+     * @return CommandResult the command result
+     *
      * @throws \RuntimeException
      * @throws ProcessTimedOutException
-     *
-     * @return CommandResult the command result
      */
     public function runCommand(
         array $command,
         ?string $pipedInput = null,
         ?int $timeout = null,
-        ?Closure $outCallback = null
+        ?\Closure $outCallback = null,
     ): CommandResult {
         $commandLine = array_merge(
             ['ssh'],
