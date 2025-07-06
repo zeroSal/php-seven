@@ -1,3 +1,5 @@
+[![PHP Pipeline](https://github.com/zeroSal/php-clientify/actions/workflows/actions.yaml/badge.svg)](https://github.com/zeroSal/php-clientify/actions/workflows/actions.yaml)
+
 # php-clientify
 PHP common client adapters library.
 
