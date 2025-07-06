@@ -12,8 +12,8 @@ use Psr\Http\Message\StreamInterface;
 class HttpResponse
 {
     public function __construct(
-        private int $statusCode = 0,
-        private ?StreamInterface $body = null,
+        private readonly int $statusCode = 0,
+        private readonly ?StreamInterface $body = null,
     ) {
     }
 

@@ -8,10 +8,10 @@ namespace Sal\Clientify\Model;
 class CommandResult
 {
     public function __construct(
-        private int $returnCode,
-        private string $standardOutput,
-        private string $errorOutput,
-        private string $command,
+        private readonly int $returnCode,
+        private readonly string $standardOutput,
+        private readonly string $errorOutput,
+        private readonly string $command,
     ) {
     }
 

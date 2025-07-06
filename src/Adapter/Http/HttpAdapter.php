@@ -29,7 +29,7 @@ class HttpAdapter implements HttpAdapterInterface
     private ?array $strictResolveList = null;
 
     public function __construct(
-        private Client $client,
+        private readonly Client $client,
     ) {
     }
 
@@ -115,7 +115,7 @@ class HttpAdapter implements HttpAdapterInterface
      */
     public function post(string $uri, array $parameters = [], ?string $json = null): HttpResponse
     {
-        if (!empty($parameters) and null !== $json) {
+        if ([] !== $parameters && null !== $json) {
             throw new \LogicException('The body must be provided as parameters or JSON. Not both.');
         }
 
@@ -168,7 +168,7 @@ class HttpAdapter implements HttpAdapterInterface
      */
     public function put(string $uri, array $parameters = [], ?string $json = null): HttpResponse
     {
-        if (!empty($parameters) and null !== $json) {
+        if ([] !== $parameters && null !== $json) {
             throw new \LogicException('The body must be provided as parameters or JSON. Not both.');
         }
 
@@ -238,8 +238,7 @@ class HttpAdapter implements HttpAdapterInterface
         /** @var HttpHeader[] $headers */
         $headers = [];
         foreach ($this->headers as $h) {
-            if ($h->getName() === $header->getName()
-            and $h->getValue() === $header->getValue()) {
+            if ($h->getName() === $header->getName() && $h->getValue() === $header->getValue()) {
                 continue;
             }
 
