@@ -31,4 +31,27 @@ class HttpResponse
     {
         return $this->statusCode < 400;
     }
+
+    /**
+     * Returns the parsed JSON response as an associative array.
+     * Returns null if the body is null.
+     *
+     * @return mixed[]
+     *
+     * @throws \RuntimeException if the response is not a valid JSON
+     */
+    public function parseJson(): ?array
+    {
+        $content = $this->body?->getContents();
+        if (null === $content) {
+            return null;
+        }
+
+        $array = json_decode($content, true);
+        if (!is_array($array)) {
+            throw new \RuntimeException('Invalid JSON response.');
+        }
+
+        return $array;
+    }
 }
