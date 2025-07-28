@@ -29,7 +29,7 @@ class MyAwesomeClient
         // Avoid TLS certificate validation
         $this->http->setVerify(false);
         // Add custom headers
-        $this->http->addHeader(HttpHeaderFactory::acceptJson());
+        $this->http->addHeader(HttpHeaderFactory::accept(ContentType::JSON));
     );
 
     // Login (Bearer)
