@@ -5,7 +5,7 @@ namespace Sal\Clientify\Model;
 enum ContentType: string
 {
     case JSON = 'application/json';
-    case X_WWW_FORM_URLENCODED = 'application/x-www-form-urlencoded'
+    case X_WWW_FORM_URLENCODED = 'application/x-www-form-urlencoded';
     case XML = 'application/xml';
     case HTML = 'text/html';
     case TEXT = 'text/plain';
