@@ -1,9 +1,9 @@
 <?php
 
-namespace Sal\Clientify\Adapter\Ssh;
+namespace Sal\Seven\Adapter\Ssh;
 
-use Sal\Clientify\Model\CommandResult;
-use Sal\Clientify\Model\File;
+use Sal\Seven\Model\CommandResult;
+use Sal\Seven\Model\File;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
 
 /**

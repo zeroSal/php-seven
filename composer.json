@@ -1,6 +1,6 @@
 {
-    "name": "sal/php-clientify",
-    "description": "PHP common client adapters library.",
+    "name": "sal/php-seven",
+    "description": "PHP ISO/OSI layer 7 adapters library.",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -22,12 +22,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Sal\\Clientify\\": "src/"
+            "Sal\\Seven\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Sal\\Clientify\\Tests\\": "tests/"
+            "Sal\\Seven\\Tests\\": "tests/"
         }
     },
     "scripts": {

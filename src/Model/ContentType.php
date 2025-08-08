@@ -1,6 +1,6 @@
 <?php
 
-namespace Sal\Clientify\Model;
+namespace Sal\Seven\Model;
 
 enum ContentType: string
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Sal\Clientify\Tests\Adapter\Ssh;
+namespace Sal\Seven\Tests\Adapter\Ssh;
 
 use PHPUnit\Framework\TestCase;
-use Sal\Clientify\Adapter\Ssh\SshAdapter;
+use Sal\Seven\Adapter\Ssh\SshAdapter;
 
 class SshAdapterTest extends TestCase
 {

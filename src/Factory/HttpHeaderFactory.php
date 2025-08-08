@@ -1,10 +1,10 @@
 <?php
 
-namespace Sal\Clientify\Factory;
+namespace Sal\Seven\Factory;
 
-use Sal\Clientify\Model\CharSet;
-use Sal\Clientify\Model\ContentType;
-use Sal\Clientify\Model\Http\Header\HttpHeader;
+use Sal\Seven\Model\CharSet;
+use Sal\Seven\Model\ContentType;
+use Sal\Seven\Model\Http\Header\HttpHeader;
 
 /**
  * @author Luca Saladino <sal65535@protonmail.com>

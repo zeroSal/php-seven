@@ -1,16 +1,16 @@
 <?php
 
-namespace Sal\Clientify\Adapter\Http;
+namespace Sal\Seven\Adapter\Http;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Sal\Clientify\Model\Http\Authentication\HttpAuthentication;
-use Sal\Clientify\Model\Http\Authentication\HttpAuthenticationType;
-use Sal\Clientify\Model\Http\Authentication\HttpBasicAuthentication;
-use Sal\Clientify\Model\Http\Authentication\HttpBearerAuthentication;
-use Sal\Clientify\Model\Http\Header\HttpHeader;
-use Sal\Clientify\Model\Http\HttpParameter;
-use Sal\Clientify\Model\Http\HttpResponse;
+use Sal\Seven\Model\Http\Authentication\HttpAuthentication;
+use Sal\Seven\Model\Http\Authentication\HttpAuthenticationType;
+use Sal\Seven\Model\Http\Authentication\HttpBasicAuthentication;
+use Sal\Seven\Model\Http\Authentication\HttpBearerAuthentication;
+use Sal\Seven\Model\Http\Header\HttpHeader;
+use Sal\Seven\Model\Http\HttpParameter;
+use Sal\Seven\Model\Http\HttpResponse;
 
 /**
  * @author Luca Saladino <sal65535@protonmail.com>

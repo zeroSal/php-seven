@@ -1,6 +1,6 @@
 <?php
 
-namespace Sal\Clientify\Model\Http;
+namespace Sal\Seven\Model\Http;
 
 use Psr\Http\Message\StreamInterface;
 

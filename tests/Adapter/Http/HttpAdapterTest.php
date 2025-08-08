@@ -1,15 +1,15 @@
 <?php
 
-namespace Sal\Clientify\Tests\Adapter\Http;
+namespace Sal\Seven\Tests\Adapter\Http;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Sal\Clientify\Adapter\Http\HttpAdapter;
-use Sal\Clientify\Model\Http\Authentication\HttpBearerAuthentication;
-use Sal\Clientify\Model\Http\Header\HttpHeader;
-use Sal\Clientify\Model\Http\HttpParameter;
+use Sal\Seven\Adapter\Http\HttpAdapter;
+use Sal\Seven\Model\Http\Authentication\HttpBearerAuthentication;
+use Sal\Seven\Model\Http\Header\HttpHeader;
+use Sal\Seven\Model\Http\HttpParameter;
 
 class HttpAdapterTest extends TestCase
 {

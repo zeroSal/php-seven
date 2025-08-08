@@ -1,6 +1,6 @@
 <?php
 
-namespace Sal\Clientify\Model\Http\Authentication;
+namespace Sal\Seven\Model\Http\Authentication;
 
 /**
  * @author Luca Saladino <sal65535@protonmail.com>

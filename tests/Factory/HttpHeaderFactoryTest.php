@@ -1,11 +1,11 @@
 <?php
 
-namespace Sal\Clientify\Tests\Factory;
+namespace Sal\Seven\Tests\Factory;
 
 use PHPUnit\Framework\TestCase;
-use Sal\Clientify\Factory\HttpHeaderFactory;
-use Sal\Clientify\Model\CharSet;
-use Sal\Clientify\Model\ContentType;
+use Sal\Seven\Factory\HttpHeaderFactory;
+use Sal\Seven\Model\CharSet;
+use Sal\Seven\Model\ContentType;
 
 class HttpHeaderFactoryTest extends TestCase
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Sal\Clientify\Tests\Model;
+namespace Sal\Seven\Tests\Model;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
-use Sal\Clientify\Model\Http\HttpResponse;
+use Sal\Seven\Model\Http\HttpResponse;
 
 class HttpResponseTest extends TestCase
 {

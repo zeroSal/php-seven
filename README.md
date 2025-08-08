@@ -1,6 +1,6 @@
-[![PHP Pipeline](https://github.com/zeroSal/php-clientify/actions/workflows/actions.yaml/badge.svg?branch=main)](https://github.com/zeroSal/php-clientify/actions/workflows/actions.yaml)
+[![PHP Pipeline](https://github.com/zeroSal/php-seven/actions/workflows/actions.yaml/badge.svg?branch=main)](https://github.com/zeroSal/php-seven/actions/workflows/actions.yaml)
 
-# php-clientify
+# php-seven
 PHP common client adapters library.
 
 ![lighting](https://github.com/user-attachments/assets/e06eeae2-55f9-4abb-9a9b-3dac22c68d8f)
@@ -9,11 +9,11 @@ PHP common client adapters library.
 
 ## Why this library?
 
-This library speeds up developing of clients via common communication protocols such as `SSH` and `HTTP`, providing `ready-to-use` and `dependency-injection-friendly` adapters.
+This library speeds up developing of clients via common layer 7 communication protocols, providing `ready-to-use` and `dependency-injection-friendly` adapters.
 
 ## Installation
 ```bash
-composer require sal/php-clientify
+composer require sal/php-seven
 ```
 
 ## Usage
