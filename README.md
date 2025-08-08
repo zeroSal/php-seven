@@ -1,15 +1,19 @@
 [![PHP Pipeline](https://github.com/zeroSal/php-seven/actions/workflows/actions.yaml/badge.svg?branch=main)](https://github.com/zeroSal/php-seven/actions/workflows/actions.yaml)
 
 # php-seven
-PHP common client adapters library.
+PHP `ISO/OSI` layer 7 protocols adapters library.
 
-![lighting](https://github.com/user-attachments/assets/e06eeae2-55f9-4abb-9a9b-3dac22c68d8f)
+<img width="128" height="128" alt="seven" src="https://github.com/user-attachments/assets/a2655528-ed04-41e7-b4bb-87b490700888" />
 
-[Icon by Freepik - Flaticon](https://www.flaticon.com/free-icons/builder)
+[Icon by smalllikeart - Flaticon](https://www.flaticon.com/free-icons/seven)
 
 ## Why this library?
-
 This library speeds up developing of clients via common layer 7 communication protocols, providing `ready-to-use` and `dependency-injection-friendly` adapters.
+
+## Protocols
+Below the exaustive list of supported protocols.
+- `HTTP(s)` authenticated via `Basic` and `Bearer` 
+- `SSH` authenticated via `IdentityFile` (asymmetric key pair)
 
 ## Installation
 ```bash
@@ -84,3 +88,8 @@ class MyAwesomeClient
     }
 }
 ```
+
+# Contribution
+Contributions are always welcomed (both issues opening and pull requests).
+## Improve the code
+Fork the project, perform your improvements and open a pull request. **Note**: pull requests **MUST** include related unit tests and related documentation if needed. All pull requests **MUST** be linked to an issue.
