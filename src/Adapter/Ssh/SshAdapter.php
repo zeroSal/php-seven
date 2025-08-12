@@ -2,6 +2,8 @@
 
 namespace Sal\Seven\Adapter\Ssh;
 
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Sal\Seven\Model\CommandResult;
 use Sal\Seven\Model\File;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
@@ -20,8 +22,12 @@ class SshAdapter implements SshAdapterInterface
     private string $user = 'root';
     private ?int $timeout = 60;
 
+    private LoggerInterface $logger;
+
     public function __construct()
     {
+        $this->logger = new NullLogger();
+
         $this->options = [
             '-o', 'ControlMaster=auto',
             '-o', 'ControlPath=/tmp/php-seven-ssh-%C',
@@ -30,6 +36,11 @@ class SshAdapter implements SshAdapterInterface
             '-o', 'StrictHostKeyChecking=no',
             '-o', 'UserKnownHostsFile=/dev/null',
         ];
+    }
+
+    public function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
     }
 
     public function setHost(string $host): void
@@ -84,6 +95,8 @@ class SshAdapter implements SshAdapterInterface
             ["{$this->user}@{$this->host}:$sourceFilePath", $destinationFolder]
         );
 
+        $this->logger->debug(implode(' ', $commandLine));
+
         $proc = new Process($commandLine);
         $proc->setTimeout($timeout);
         $proc->run();
@@ -119,6 +132,8 @@ class SshAdapter implements SshAdapterInterface
             $this->options,
             [$sourceFilePath, "{$this->user}@{$this->host}:$destinationFolder/"]
         );
+
+        $this->logger->debug(implode(' ', $commandLine));
 
         $proc = new Process($commandLine);
         $proc->setTimeout($timeout);
@@ -170,6 +185,8 @@ class SshAdapter implements SshAdapterInterface
             [(new Process($command))->getCommandLine()]
         );
 
+        $this->logger->debug(implode(' ', $commandLine));
+
         $proc = new Process($commandLine);
 
         if (null !== $pipedInput) {
@@ -200,6 +217,8 @@ class SshAdapter implements SshAdapterInterface
             $this->options,
             ["{$this->user}@$this->host"]
         );
+
+        $this->logger->debug(implode(' ', $commandLine));
 
         $process = new Process($commandLine);
         $process->setTimeout(null);

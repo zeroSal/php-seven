@@ -4,6 +4,8 @@ namespace Sal\Seven\Adapter\Http;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Sal\Seven\Model\Http\Authentication\HttpAuthentication;
 use Sal\Seven\Model\Http\Authentication\HttpAuthenticationType;
 use Sal\Seven\Model\Http\Authentication\HttpBasicAuthentication;
@@ -28,9 +30,17 @@ class HttpAdapter implements HttpAdapterInterface
     /** @var ?string[] */
     private ?array $strictResolveList = null;
 
+    private LoggerInterface $logger;
+
     public function __construct(
         private readonly Client $client,
     ) {
+        $this->logger = new NullLogger();
+    }
+
+    public function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
     }
 
     /**
@@ -100,6 +110,12 @@ class HttpAdapter implements HttpAdapterInterface
     {
         $options = $this->buildOptions();
         $uri = empty($this->baseUri) ? $uri : "{$this->baseUri}{$uri}";
+
+        $this->logger->debug('GET', [
+            'uri' => $uri,
+            'options' => $options,
+        ]);
+
         $response = $this->client->get($uri, $options);
 
         return new HttpResponse(
@@ -138,6 +154,11 @@ class HttpAdapter implements HttpAdapterInterface
             $options
         );
 
+        $this->logger->debug('POST', [
+            'uri' => $uri,
+            'options' => $options,
+        ]);
+
         $response = $this->client->post($uri, $options);
 
         return new HttpResponse(
@@ -153,6 +174,12 @@ class HttpAdapter implements HttpAdapterInterface
     {
         $options = $this->buildOptions();
         $uri = empty($this->baseUri) ? $uri : "{$this->baseUri}{$uri}";
+
+        $this->logger->debug('DELETE', [
+            'uri' => $uri,
+            'options' => $options,
+        ]);
+
         $response = $this->client->delete($uri, $options);
 
         return new HttpResponse(
@@ -193,6 +220,11 @@ class HttpAdapter implements HttpAdapterInterface
             $this->buildOptions(),
             $options
         );
+
+        $this->logger->debug('PUT', [
+            'uri' => $uri,
+            'options' => $options,
+        ]);
 
         $response = $this->client->put($uri, $options);
 

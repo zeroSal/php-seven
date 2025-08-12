@@ -2,6 +2,7 @@
 
 namespace Sal\Seven\Adapter\Ssh;
 
+use Psr\Log\LoggerAwareInterface;
 use Sal\Seven\Model\CommandResult;
 use Sal\Seven\Model\File;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
@@ -9,7 +10,7 @@ use Symfony\Component\Process\Exception\ProcessTimedOutException;
 /**
  * @author Luca Saladino <sal65535@protonmail.com>
  */
-interface SshAdapterInterface
+interface SshAdapterInterface extends LoggerAwareInterface
 {
     public function setHost(string $host): void;
 

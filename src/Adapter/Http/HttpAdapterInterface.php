@@ -3,6 +3,7 @@
 namespace Sal\Seven\Adapter\Http;
 
 use GuzzleHttp\Exception\GuzzleException;
+use Psr\Log\LoggerAwareInterface;
 use Sal\Seven\Model\Http\Authentication\HttpAuthentication;
 use Sal\Seven\Model\Http\Header\HttpHeader;
 use Sal\Seven\Model\Http\HttpParameter;
@@ -11,7 +12,7 @@ use Sal\Seven\Model\Http\HttpResponse;
 /**
  * @author Luca Saladino <sal65535@protonmail.com>
  */
-interface HttpAdapterInterface
+interface HttpAdapterInterface extends LoggerAwareInterface
 {
     /**
      * @throws GuzzleException
