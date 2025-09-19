@@ -278,7 +278,7 @@ class SshAdapter implements SshAdapterInterface
     {
         $this->options = array_values(array_filter(
             $this->options,
-            fn ($opt) => 'HostKeyAlgorithms=+ssh-dss' !== $opt
+            fn ($opt): bool => 'HostKeyAlgorithms=+ssh-dss' !== $opt
         ));
 
         if ($status) {
