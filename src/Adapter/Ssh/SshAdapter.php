@@ -32,7 +32,6 @@ class SshAdapter implements SshAdapterInterface
             '-o', 'ControlMaster=auto',
             '-o', 'ControlPath=/tmp/php-seven-ssh-%C',
             '-o', 'ControlPersist=60m',
-            '-o', 'HostKeyAlgorithms=+ssh-dss',
             '-o', 'StrictHostKeyChecking=no',
             '-o', 'UserKnownHostsFile=/dev/null',
         ];
@@ -271,6 +270,23 @@ class SshAdapter implements SshAdapterInterface
             $this->options,
             ['-i', $path]
         );
+
+        return $this;
+    }
+
+    public function permitDsaHostKey(bool $status): self
+    {
+        $this->options = array_values(array_filter(
+            $this->options,
+            fn ($opt) => 'HostKeyAlgorithms=+ssh-dss' !== $opt
+        ));
+
+        if ($status) {
+            $this->options = array_merge(
+                $this->options,
+                ['-o', 'HostKeyAlgorithms=+ssh-dss']
+            );
+        }
 
         return $this;
     }

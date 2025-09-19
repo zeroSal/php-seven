@@ -19,4 +19,20 @@ class SshAdapterTest extends TestCase
         $this->assertEquals(30, $adapter->getTimeout());
         $this->assertContains('-o', $adapter->getOptions());
     }
+
+    public function testPermitDsaHostKey()
+    {
+        $adapter = new SshAdapter();
+        $options = $adapter->getOptions();
+
+        $this->assertNotContains('HostKeyAlgorithms=+ssh-dss', $options);
+
+        $adapter->permitDsaHostKey(true);
+        $options = $adapter->getOptions();
+        $this->assertContains('HostKeyAlgorithms=+ssh-dss', $options);
+
+        $adapter->permitDsaHostKey(false);
+        $options = $adapter->getOptions();
+        $this->assertNotContains('HostKeyAlgorithms=+ssh-dss', $options);
+    }
 }
