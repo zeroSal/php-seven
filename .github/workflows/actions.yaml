@@ -73,6 +73,8 @@ jobs:
         run: composer install --prefer-dist --no-scripts --no-progress --no-suggest
 
       - name: Run PHPUnit
+        env:
+          XDEBUG_MODE: coverage
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
 
       - name: Upload coverage to Codecov

@@ -1,5 +1,4 @@
 [![PHP Pipeline](https://github.com/zeroSal/php-seven/actions/workflows/actions.yaml/badge.svg?branch=main)](https://github.com/zeroSal/php-seven/actions/workflows/actions.yaml)
-
 [![codecov](https://codecov.io/gh/zeroSal/php-seven/branch/main/graph/badge.svg)](https://codecov.io/gh/zeroSal/php-seven)
 
 # php-seven
