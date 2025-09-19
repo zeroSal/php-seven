@@ -43,6 +43,11 @@ class HttpAdapter implements HttpAdapterInterface
         $this->logger = $logger;
     }
 
+    public function getLogger(): LoggerInterface
+    {
+        return $this->logger;
+    }
+
     /**
      * @return mixed[]
      */

@@ -42,6 +42,11 @@ class SshAdapter implements SshAdapterInterface
         $this->logger = $logger;
     }
 
+    public function getLogger(): LoggerInterface
+    {
+        return $this->logger;
+    }
+
     public function setHost(string $host): void
     {
         $this->host = $host;

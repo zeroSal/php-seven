@@ -16,12 +16,12 @@ class SshAdapterTest extends TestCase
         /** @var LoggerInterface|MockObject */
         $logger = $this->createMock(ConsoleLogger::class);
         $adapter->setLogger($logger);
-        $this->assertInstanceOf(ConsoleLogger::class, $logger);
+        $this->assertInstanceOf(ConsoleLogger::class, $adapter->getLogger());
 
         /** @var LoggerInterface|MockObject */
         $logger = $this->createMock(NullLogger::class);
         $adapter->setLogger($logger);
-        $this->assertInstanceOf(NullLogger::class, $logger);
+        $this->assertInstanceOf(NullLogger::class, $adapter->getLogger());
     }
 
     public function testSetTimeout()
