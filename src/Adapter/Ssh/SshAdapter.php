@@ -31,7 +31,7 @@ class SshAdapter implements SshAdapterInterface
         $this->options = [
             '-o', 'ControlMaster=auto',
             '-o', 'ControlPath=/tmp/php-seven-ssh-%C',
-            '-o', 'ControlPersist=60m',
+            '-o', 'ControlPersist=15m',
             '-o', 'StrictHostKeyChecking=no',
             '-o', 'UserKnownHostsFile=/dev/null',
         ];
