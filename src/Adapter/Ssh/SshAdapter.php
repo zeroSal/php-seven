@@ -4,6 +4,7 @@ namespace Sal\Seven\Adapter\Ssh;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Sal\Seven\Loader\SshAdapterConfigLoader;
 use Sal\Seven\Model\CommandResult;
 use Sal\Seven\Model\File;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
@@ -16,7 +17,7 @@ use Symfony\Component\Process\Process;
 class SshAdapter implements SshAdapterInterface
 {
     /** @var string[] */
-    private $options;
+    private $options = [];
 
     private string $host;
     private string $user = 'root';
@@ -24,17 +25,20 @@ class SshAdapter implements SshAdapterInterface
 
     private LoggerInterface $logger;
 
-    public function __construct()
-    {
-        $this->logger = new NullLogger();
+    public function __construct(
+        ?SshAdapterConfigLoader $configLoader = null,
+        ?LoggerInterface $logger = null,
+    ) {
+        $this->logger = $logger ?? new NullLogger();
 
-        $this->options = [
-            '-o', 'ControlMaster=auto',
-            '-o', 'ControlPath=/tmp/php-seven-ssh-%C',
-            '-o', 'ControlPersist=15m',
-            '-o', 'StrictHostKeyChecking=no',
-            '-o', 'UserKnownHostsFile=/dev/null',
-        ];
+        if (null !== $configLoader) {
+            $config = $configLoader->load();
+            if (null !== $config) {
+                foreach ($config->getOptions() as $option) {
+                    $this->addOption($option);
+                }
+            }
+        }
     }
 
     public function setLogger(LoggerInterface $logger): void
@@ -279,18 +283,22 @@ class SshAdapter implements SshAdapterInterface
         return $this;
     }
 
-    public function permitDsaHostKey(bool $status): self
+    public function removeOption(string $option): self
     {
         $this->options = array_values(array_filter(
             $this->options,
-            fn ($opt): bool => 'HostKeyAlgorithms=+ssh-dss' !== $opt
+            fn (string $opt): bool => $option !== $opt
         ));
 
+        return $this;
+    }
+
+    public function permitDsaHostKey(bool $status): self
+    {
+        $this->removeOption('HostKeyAlgorithms=+ssh-dss');
+
         if ($status) {
-            $this->options = array_merge(
-                $this->options,
-                ['-o', 'HostKeyAlgorithms=+ssh-dss']
-            );
+            $this->addOption('HostKeyAlgorithms=+ssh-dss');
         }
 
         return $this;

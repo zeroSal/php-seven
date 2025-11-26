@@ -21,7 +21,41 @@ Below the exaustive list of supported protocols.
 composer require sal/php-seven
 ```
 
+## Configuration
+Adapters can be configured via a `yaml` file.
+
+### Example (Symfony)
+
+First of all, edit the `service.yaml` file as follows:
+```yaml
+# services.yaml
+services:
+    ssh_adapter_config_loader:
+        class: Sal\Seven\Loader\SshAdapterConfigLoader
+        arguments:
+            $path: '%kernel.project_dir%/config/php_seven/ssh.yaml'
+
+    ssh_adapter:
+        class: Sal\Seven\Adapter\Ssh\SshAdapter
+        arguments:
+            $configLoader: @ssh_adapter_config_loader
+```
+
+Then, create the `php_seven/ssh.yaml` file as follows:
+```yaml
+# ssh.yaml
+options:
+    # - "ControlMaster=auto"
+    # - "ControlPath=/tmp/php-seven-ssh-%C"
+    # - "StrictHostKeyChecking=no"
+    # - "ControlPersist=15m"
+    # - "UserKnownHostsFile=/dev/null"
+```
+
 ## Usage
+Below some examples of usage.
+
+### HTTP Client
 ```php
 class MyAwesomeClient
 {
@@ -86,6 +120,60 @@ class MyAwesomeClient
         if (!$response->isSuccessful()) {
             throw new RuntimeException("Response code: {$response->getStatusCode()}");
         }
+    }
+}
+```
+
+### SSH Client
+```php
+class MyAwesomeClient
+{
+    public function __construct() {
+        // Require the instance to dependency injection
+        private SshAdapterInterface $ssh;
+
+        // Require the instance of the logger to dependency injection (optional)
+        private LoggerInterface $logger
+    } (
+        // Set a custom timeout to SSH connections
+        $this->ssh->setTimeout(20);
+
+        // Set the host
+        $this->ssh->setHost('127.0.0.1');
+
+        // Set the user
+        $this->ssh->setUser('root');
+
+        // Set the logger (optional)
+        $this->ssh->setLogger($this->logger);
+
+        // Add an identity file
+        $this->addIdentityFile('~/.ssh/id_rsa');
+    );
+
+    public function shutdown(): void
+    {
+        try {
+            // Run a command, saving the result in a variable
+            $result = $this->ssh->runCommand(['shutdown', '-h', 'now']);
+        } catch (ProcessTimedOutException $e) {
+            // Catch the timeout exception
+            $this->logger->error($e->getMessage());
+        } catch (RuntimeException $e) {
+            // Catch other exceptions
+            $this->logger->error($e->getMessage());
+        }
+
+        // Use the isSuccessful() method to check if the status code is 0
+        if (!$result->isSuccessful()) {
+            $this->logger->error($result->getReturnCode());
+            $this->logger->error($result->getOutput());
+
+            return;
+        }
+
+        $this->logger->info($result->getReturnCode());
+        $this->logger->info($result->getOutput());
     }
 }
 ```
