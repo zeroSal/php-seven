@@ -38,7 +38,7 @@ services:
     ssh_adapter:
         class: Sal\Seven\Adapter\Ssh\SshAdapter
         arguments:
-            $configLoader: @ssh_adapter_config_loader
+            $configLoader: "@ssh_adapter_config_loader"
 ```
 
 Then, create the `php_seven/ssh.yaml` file as follows:
