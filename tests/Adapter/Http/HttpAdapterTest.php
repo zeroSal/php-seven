@@ -115,6 +115,28 @@ class HttpAdapterTest extends TestCase
         $this->assertEquals('created', (string) $response->getBody());
     }
 
+    public function testPatchWithJson()
+    {
+        $mockResponse = new Response(201, [], 'created');
+
+        /** @var Client|MockObject $client */
+        $client = $this->createMock(Client::class);
+        $client->expects($this->once())
+            ->method('patch')
+            ->with('https://example.com/test', $this->callback(function ($options) {
+                return isset($options['body']) && '{"key":"value"}' === $options['body'];
+            }))
+            ->willReturn($mockResponse);
+
+        $adapter = new HttpAdapter($client);
+        $adapter->setBaseUri('https://example.com');
+
+        $response = $adapter->patch('/test', [], '{"key":"value"}');
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals('created', (string) $response->getBody());
+    }
+
     public function testPostWithFormParameters()
     {
         $mockResponse = new Response(200, [], 'ok');
@@ -158,6 +180,30 @@ class HttpAdapterTest extends TestCase
         $param = new HttpParameter('foo', 'bar');
 
         $response = $adapter->put('/test', [$param]);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('ok', (string) $response->getBody());
+    }
+
+    public function testPatchWithFormParameters()
+    {
+        $mockResponse = new Response(200, [], 'ok');
+
+        /** @var Client|MockObject $client */
+        $client = $this->createMock(Client::class);
+        $client->expects($this->once())
+            ->method('patch')
+            ->with('https://example.com/test', $this->callback(function ($options) {
+                return isset($options['form_params']) && 'bar' === $options['form_params']['foo'];
+            }))
+            ->willReturn($mockResponse);
+
+        $adapter = new HttpAdapter($client);
+        $adapter->setBaseUri('https://example.com');
+
+        $param = new HttpParameter('foo', 'bar');
+
+        $response = $adapter->patch('/test', [$param]);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('ok', (string) $response->getBody());

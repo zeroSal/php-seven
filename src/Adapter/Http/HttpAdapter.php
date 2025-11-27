@@ -239,6 +239,52 @@ class HttpAdapter implements HttpAdapterInterface
         );
     }
 
+    /**
+     * @param HttpParameter[] $parameters
+     *
+     * @throws GuzzleException
+     */
+    public function patch(string $uri, array $parameters = [], ?string $json = null): HttpResponse
+    {
+        if ([] !== $parameters && null !== $json) {
+            throw new \LogicException('The body must be provided as parameters or JSON. Not both.');
+        }
+
+        $uri = empty($this->baseUri) ? $uri : "{$this->baseUri}{$uri}";
+        $options = [
+            'body' => $json,
+        ];
+
+        if (null === $json) {
+            $paramsArray = [];
+            foreach ($parameters as $param) {
+                $paramsArray = array_merge(
+                    $paramsArray,
+                    [$param->getName() => $param->getValue()]
+                );
+            }
+
+            $options = ['form_params' => $paramsArray];
+        }
+
+        $options = array_merge(
+            $this->buildOptions(),
+            $options
+        );
+
+        $this->logger->debug('PATCH', [
+            'uri' => $uri,
+            'options' => $options,
+        ]);
+
+        $response = $this->client->patch($uri, $options);
+
+        return new HttpResponse(
+            $response->getStatusCode(),
+            $response->getBody()
+        );
+    }
+
     public function getBaseUri(): ?string
     {
         return $this->baseUri;

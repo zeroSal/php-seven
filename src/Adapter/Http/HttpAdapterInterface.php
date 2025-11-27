@@ -38,6 +38,13 @@ interface HttpAdapterInterface extends LoggerAwareInterface
      */
     public function put(string $uri, array $parameters = [], ?string $json = null): HttpResponse;
 
+    /**
+     * @param HttpParameter[] $parameters
+     *
+     * @throws GuzzleException
+     */
+    public function patch(string $uri, array $parameters = [], ?string $json = null): HttpResponse;
+
     public function getBaseUri(): ?string;
 
     public function setBaseUri(string $baseUri): void;
