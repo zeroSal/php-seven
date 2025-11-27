@@ -5,6 +5,7 @@ namespace Sal\Seven\Model;
 enum ContentType: string
 {
     case JSON = 'application/json';
+    case JSON_MERGE_PATCH = 'application/merge-patch+json';
     case X_WWW_FORM_URLENCODED = 'application/x-www-form-urlencoded';
     case XML = 'application/xml';
     case HTML = 'text/html';
