@@ -4,6 +4,7 @@ namespace Sal\Seven\Adapter\Http;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Utils;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sal\Seven\Model\Http\Authentication\HttpAuthentication;
@@ -278,6 +279,76 @@ class HttpAdapter implements HttpAdapterInterface
         ]);
 
         $response = $this->client->patch($uri, $options);
+
+        return new HttpResponse(
+            $response->getStatusCode(),
+            $response->getBody()
+        );
+    }
+
+    /**
+     * Upload a file via POST request.
+     *
+     * @throws GuzzleException
+     * @throws \RuntimeException
+     */
+    public function upload(string $uri, \SplFileInfo $file): HttpResponse
+    {
+        $uri = empty($this->baseUri) ? $uri : "{$this->baseUri}{$uri}";
+
+        try {
+            $stream = Utils::tryFopen($file->getPathname(), 'r');
+        } catch (\RuntimeException) {
+            throw new \RuntimeException("Cannot open file '{$file->getPathname()}' for reading.");
+        }
+
+        $options = array_merge(
+            $this->buildOptions(), [
+                'body' => $stream,
+            ]
+        );
+
+        $this->logger->debug('UPLOAD', [
+            'uri' => $uri,
+            'options' => $options,
+        ]);
+
+        $response = $this->client->post($uri, $options);
+
+        return new HttpResponse(
+            $response->getStatusCode(),
+            $response->getBody()
+        );
+    }
+
+    /**
+     * Upload a file via PUT request, prepending to replace it if exists.
+     *
+     * @throws GuzzleException
+     * @throws \RuntimeException
+     */
+    public function replace(string $uri, \SplFileInfo $file): HttpResponse
+    {
+        $uri = empty($this->baseUri) ? $uri : "{$this->baseUri}{$uri}";
+
+        try {
+            $stream = Utils::tryFopen($file->getPathname(), 'r');
+        } catch (\RuntimeException) {
+            throw new \RuntimeException("Cannot open file '{$file->getPathname()}' for reading.");
+        }
+
+        $options = array_merge(
+            $this->buildOptions(), [
+                'body' => $stream,
+            ]
+        );
+
+        $this->logger->debug('REPLACE', [
+            'uri' => $uri,
+            'options' => $options,
+        ]);
+
+        $response = $this->client->put($uri, $options);
 
         return new HttpResponse(
             $response->getStatusCode(),

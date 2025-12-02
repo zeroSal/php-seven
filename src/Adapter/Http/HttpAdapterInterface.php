@@ -45,6 +45,18 @@ interface HttpAdapterInterface extends LoggerAwareInterface
      */
     public function patch(string $uri, array $parameters = [], ?string $json = null): HttpResponse;
 
+    /**
+     * @throws GuzzleException
+     * @throws \RuntimeException
+     */
+    public function upload(string $uri, \SplFileInfo $file): HttpResponse;
+
+    /**
+     * @throws GuzzleException
+     * @throws \RuntimeException
+     */
+    public function replace(string $uri, \SplFileInfo $file): HttpResponse;
+
     public function getBaseUri(): ?string;
 
     public function setBaseUri(string $baseUri): void;

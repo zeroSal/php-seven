@@ -209,7 +209,139 @@ class HttpAdapterTest extends TestCase
         $this->assertEquals('ok', (string) $response->getBody());
     }
 
-    public function testBearerAuthenticationHeader()
+    public function testUploadFile(): void
+    {
+        $mockResponse = new Response(201, [], 'uploaded');
+
+        $filePath = sys_get_temp_dir().'/test_upload.txt';
+        file_put_contents($filePath, 'test content');
+        $file = new \SplFileInfo($filePath);
+
+        $client = $this->createMock(Client::class);
+        $client->expects($this->once())
+            ->method('post')
+            ->with(
+                'https://example.com/upload',
+                $this->callback(
+                    function (mixed $options) use ($file): bool {
+                        return isset($options['body'])
+                            && stream_get_contents($options['body']) === file_get_contents($file->getPathname());
+                    }
+                )
+            )
+            ->willReturn($mockResponse);
+
+        $adapter = new HttpAdapter($client);
+        $adapter->setBaseUri('https://example.com');
+
+        $response = $adapter->upload('/upload', $file);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals('uploaded', (string) $response->getBody());
+
+        unlink($filePath);
+    }
+
+    public function testReplaceFile(): void
+    {
+        $mockResponse = new Response(200, [], 'replaced');
+
+        $filePath = sys_get_temp_dir().'/test_replace.txt';
+        file_put_contents($filePath, 'replace content');
+        $file = new \SplFileInfo($filePath);
+
+        $client = $this->createMock(Client::class);
+        $client->expects($this->once())
+            ->method('put')
+            ->with(
+                'https://example.com/replace',
+                $this->callback(
+                    function (mixed $options) use ($file): bool {
+                        return isset($options['body'])
+                            && stream_get_contents($options['body']) === file_get_contents($file->getPathname());
+                    }
+                )
+            )
+            ->willReturn($mockResponse);
+
+        $adapter = new HttpAdapter($client);
+        $adapter->setBaseUri('https://example.com');
+
+        $response = $adapter->replace('/replace', $file);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('replaced', (string) $response->getBody());
+
+        unlink($filePath);
+    }
+
+    public function testUploadFileThrowsExceptionIfFileCannotBeOpened(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot open file');
+
+        $file = new \SplFileInfo('/path/to/nonexistent/file.txt');
+
+        $client = $this->createMock(Client::class);
+        $adapter = new HttpAdapter($client);
+
+        $adapter->upload('/upload', $file);
+    }
+
+    public function testReplaceFileThrowsExceptionIfFileCannotBeOpened(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot open file');
+
+        $file = new \SplFileInfo('/path/to/nonexistent/file.txt');
+
+        $client = $this->createMock(Client::class);
+        $adapter = new HttpAdapter($client);
+
+        $adapter->replace('/replace', $file);
+    }
+
+    public function testUploadFileWithGuzzleException(): void
+    {
+        $this->expectException(\GuzzleHttp\Exception\GuzzleException::class);
+
+        $filePath = sys_get_temp_dir().'/test_upload.txt';
+        file_put_contents($filePath, 'test content');
+        $file = new \SplFileInfo($filePath);
+
+        $client = $this->createMock(Client::class);
+        $client->method('post')->willThrowException(
+            new class extends \Exception implements \GuzzleHttp\Exception\GuzzleException {}
+        );
+
+        $adapter = new HttpAdapter($client);
+
+        $adapter->upload('/upload', $file);
+
+        unlink($filePath);
+    }
+
+    public function testReplaceFileWithGuzzleException(): void
+    {
+        $this->expectException(\GuzzleHttp\Exception\GuzzleException::class);
+
+        $filePath = sys_get_temp_dir().'/test_replace.txt';
+        file_put_contents($filePath, 'replace content');
+        $file = new \SplFileInfo($filePath);
+
+        $client = $this->createMock(Client::class);
+        $client->method('put')->willThrowException(
+            new class extends \Exception implements \GuzzleHttp\Exception\GuzzleException {}
+        );
+
+        $adapter = new HttpAdapter($client);
+
+        $adapter->replace('/replace', $file);
+
+        unlink($filePath);
+    }
+
+    public function testBearerAuthenticationHeader(): void
     {
         $mockResponse = new Response(200, [], 'ok');
 
@@ -217,10 +349,15 @@ class HttpAdapterTest extends TestCase
         $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('get')
-            ->with('https://example.com/test', $this->callback(function ($options) {
-                return isset($options['headers']['Authorization'])
-                       && 'Bearer TOKEN123' === $options['headers']['Authorization'];
-            }))
+            ->with(
+                'https://example.com/test',
+                $this->callback(
+                    function (mixed $options): bool {
+                        return isset($options['headers']['Authorization'])
+                            && 'Bearer TOKEN123' === $options['headers']['Authorization'];
+                    }
+                )
+            )
             ->willReturn($mockResponse);
 
         $adapter = new HttpAdapter($client);
