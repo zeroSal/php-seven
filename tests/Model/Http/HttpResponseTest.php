@@ -1,6 +1,6 @@
 <?php
 
-namespace Sal\Seven\Tests\Model;
+namespace Sal\Seven\Tests\Model\Http;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -21,13 +21,13 @@ class HttpResponseTest extends TestCase
         $this->assertNull($response->parseJson());
     }
 
-    public function testGetStatusCode()
+    public function testGetStatusCode(): void
     {
         $response = new HttpResponse(200);
         $this->assertSame(200, $response->getStatusCode());
     }
 
-    public function testGetBody()
+    public function testGetBody(): void
     {
         /** @var StreamInterface|MockObject $stream */
         $stream = $this->createMock(StreamInterface::class);
@@ -35,7 +35,7 @@ class HttpResponseTest extends TestCase
         $this->assertSame($stream, $response->getBody());
     }
 
-    public function testIsSuccessful()
+    public function testIsSuccessful(): void
     {
         $response = new HttpResponse(200);
         $this->assertTrue($response->isSuccessful());
@@ -44,7 +44,7 @@ class HttpResponseTest extends TestCase
         $this->assertFalse($response->isSuccessful());
     }
 
-    public function testParseJsonReturnsArray()
+    public function testParseJsonReturnsArray(): void
     {
         /** @var StreamInterface|MockObject $stream */
         $stream = $this->createMock(StreamInterface::class);
@@ -54,13 +54,13 @@ class HttpResponseTest extends TestCase
         $this->assertSame(['foo' => 'bar'], $response->parseJson());
     }
 
-    public function testParseJsonReturnsNullIfBodyIsNull()
+    public function testParseJsonReturnsNullIfBodyIsNull(): void
     {
         $response = new HttpResponse(200, null);
         $this->assertNull($response->parseJson());
     }
 
-    public function testParseJsonThrowsExceptionOnInvalidJson()
+    public function testParseJsonThrowsExceptionOnInvalidJson(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Invalid JSON response.');
