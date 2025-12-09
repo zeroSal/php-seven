@@ -2,7 +2,7 @@
 
 namespace Sal\Seven\Model\JsonRpc;
 
-class JsonRpcResponse
+readonly class JsonRpcResponse
 {
     public function __construct(
         private ?string $id,
