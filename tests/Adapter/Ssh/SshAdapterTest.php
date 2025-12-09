@@ -10,7 +10,7 @@ use Symfony\Component\Console\Logger\ConsoleLogger;
 
 class SshAdapterTest extends TestCase
 {
-    public function testSetLogger()
+    public function testSetLogger(): void
     {
         $adapter = new SshAdapter();
         /** @var LoggerInterface|MockObject */
@@ -24,7 +24,7 @@ class SshAdapterTest extends TestCase
         $this->assertInstanceOf(NullLogger::class, $adapter->getLogger());
     }
 
-    public function testSetTimeout()
+    public function testSetTimeout(): void
     {
         $adapter = new SshAdapter();
         $adapter->setTimeout(120);
@@ -36,7 +36,7 @@ class SshAdapterTest extends TestCase
         $this->assertContains('ConnectTimeout=0', $adapter->getOptions());
     }
 
-    public function testSetters()
+    public function testSetters(): void
     {
         $adapter = new SshAdapter();
         $adapter->setHost('127.0.0.1');
@@ -49,7 +49,7 @@ class SshAdapterTest extends TestCase
         $this->assertContains('-o', $adapter->getOptions());
     }
 
-    public function testAddIdentityFile()
+    public function testAddIdentityFile(): void
     {
         $adapter = new SshAdapter();
         $adapter->addIdentityFile('/path/to/id_rsa');
@@ -57,7 +57,7 @@ class SshAdapterTest extends TestCase
         $this->assertContains('/path/to/id_rsa', $adapter->getOptions());
     }
 
-    public function testAddJump()
+    public function testAddJump(): void
     {
         $adapter = new SshAdapter();
         $adapter->addJump('jump.example.com');
@@ -65,7 +65,7 @@ class SshAdapterTest extends TestCase
         $this->assertContains('jump.example.com', $adapter->getOptions());
     }
 
-    public function testAddConfigFile()
+    public function testAddConfigFile(): void
     {
         $adapter = new SshAdapter();
         $adapter->addConfigFile('/path/to/ssh_config');
@@ -73,7 +73,7 @@ class SshAdapterTest extends TestCase
         $this->assertContains('/path/to/ssh_config', $adapter->getOptions());
     }
 
-    public function testAddOption()
+    public function testAddOption(): void
     {
         $adapter = new SshAdapter();
         $adapter->addOption('test');
@@ -81,7 +81,7 @@ class SshAdapterTest extends TestCase
         $this->assertContains('test', $adapter->getOptions());
     }
 
-    public function testPermitDsaHostKey()
+    public function testPermitDsaHostKey(): void
     {
         $adapter = new SshAdapter();
         $options = $adapter->getOptions();
