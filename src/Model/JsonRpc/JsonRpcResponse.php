@@ -2,12 +2,12 @@
 
 namespace Sal\Seven\Model\JsonRpc;
 
-readonly class JsonRpcResponse
+class JsonRpcResponse
 {
     public function __construct(
-        private ?string $id,
-        private mixed $result,
-        private ?JsonRpcError $error = null,
+        private readonly ?string $id,
+        private readonly mixed $result,
+        private readonly ?JsonRpcError $error = null,
     ) {
     }
 
