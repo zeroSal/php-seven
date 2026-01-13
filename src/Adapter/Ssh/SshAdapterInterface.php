@@ -2,15 +2,14 @@
 
 namespace Sal\Seven\Adapter\Ssh;
 
-use Psr\Log\LoggerAwareInterface;
-use Sal\Seven\Model\CommandResult;
+use Sal\Seven\Adapter\Shell\ShellAdapterInterface;
 use Sal\Seven\Model\File;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
 
 /**
  * @author Luca Saladino <sal65535@protonmail.com>
  */
-interface SshAdapterInterface extends LoggerAwareInterface
+interface SshAdapterInterface extends ShellAdapterInterface
 {
     public function setHost(string $host): void;
 
@@ -25,26 +24,6 @@ interface SshAdapterInterface extends LoggerAwareInterface
     public function getTimeout(): ?int;
 
     public function waitForSshLogin(): void;
-
-    /**
-     * Runs a command via SSH providing $pipedInput in command STDIN.
-     * The process will be killed when $timeout seconds are reached.
-     * If the timeout is null, then no timeout is set to the process.
-     * Executes: ssh -o <option> user@host $command | $pipedInput.
-     *
-     * @param mixed[] $command
-     *
-     * @return CommandResult the command result
-     *
-     * @throws \RuntimeException
-     * @throws ProcessTimedOutException
-     */
-    public function runCommand(
-        array $command,
-        ?string $pipedInput = null,
-        ?int $timeout = null,
-        ?\Closure $outCallback = null,
-    ): CommandResult;
 
     /**
      * Uploads a file via SCP killing the process when $timeout seconds are reached.
