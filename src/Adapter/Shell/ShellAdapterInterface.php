@@ -11,8 +11,6 @@ interface ShellAdapterInterface extends LoggerAwareInterface
     /**
      * @param mixed[] $command
      *
-     * @return CommandResult the command result
-     *
      * @throws \RuntimeException
      * @throws ProcessTimedOutException
      */
@@ -21,5 +19,21 @@ interface ShellAdapterInterface extends LoggerAwareInterface
         ?string $pipedInput = null,
         ?int $timeout = null,
         ?\Closure $outCallback = null,
+    ): CommandResult;
+
+    /**
+     * @param mixed[] $env
+     *
+     * @throws ProcessTimedOutException
+     * @throws \RuntimeException
+     * @throws \LogicException
+     */
+    public function runBufferedCommand(
+        string $commandline,
+        string $outputFile,
+        array $env = [],
+        ?int $timeout = null,
+        bool $tty = false,
+        bool $pty = false,
     ): CommandResult;
 }

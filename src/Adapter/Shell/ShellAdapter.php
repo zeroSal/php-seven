@@ -64,4 +64,50 @@ class ShellAdapter implements ShellAdapterInterface
             $proc->getCommandLine(),
         );
     }
+
+    /**
+     * @throws \RuntimeException
+     * @throws \LogicException
+     * @throws ProcessTimedOutException
+     */
+    public function runBufferedCommand(
+        string $commandline,
+        string $outputFile,
+        array $env = [],
+        ?int $timeout = null,
+        bool $tty = false,
+        bool $pty = false,
+    ): CommandResult {
+        if ($tty && $pty) {
+            throw new \LogicException('TTY and PTY cannot be enabled together.');
+        }
+
+        $process = Process::fromShellCommandline($commandline);
+        $process->setTty($tty);
+        $process->setPty($pty);
+        $process->setTimeout($timeout);
+
+        $this->logger->debug($commandline, $env);
+
+        $process->start(null, $env);
+        $process->wait();
+
+        $output = '';
+        if (is_file($outputFile)) {
+            $output = (string) file_get_contents($outputFile);
+            @unlink($outputFile);
+        }
+
+        $exitCode = $process->getExitCode();
+        if (null === $exitCode) {
+            $exitCode = $process->isSuccessful() ? 0 : 1;
+        }
+
+        return new CommandResult(
+            $exitCode,
+            $output,
+            $process->getErrorOutput(),
+            $process->getCommandLine(),
+        );
+    }
 }

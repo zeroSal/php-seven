@@ -213,6 +213,59 @@ class SshAdapter implements SshAdapterInterface
     }
 
     /**
+     * @throws \RuntimeException
+     * @throws ProcessTimedOutException
+     * @throws \LogicException
+     */
+    public function runBufferedCommand(
+        string $commandline,
+        string $outputFile,
+        array $env = [],
+        ?int $timeout = null,
+        bool $tty = false,
+        bool $pty = false,
+    ): CommandResult {
+        if ($tty && $pty) {
+            throw new \LogicException('TTY and PTY cannot be enabled together.');
+        }
+
+        $sshCommand = array_merge(
+            ['ssh'],
+            $this->options,
+            ["{$this->user}@{$this->host}"],
+            [$commandline]
+        );
+
+        $this->logger->debug(implode(' ', $sshCommand), $env);
+
+        $process = new Process($sshCommand);
+        $process->setTimeout($timeout);
+        $process->setTty($tty);
+        $process->setPty($pty);
+
+        $process->start(null, $env);
+        $process->wait();
+
+        $output = '';
+        if (is_file($outputFile)) {
+            $output = (string) file_get_contents($outputFile);
+            @unlink($outputFile);
+        }
+
+        $exitCode = $process->getExitCode();
+        if (null === $exitCode) {
+            $exitCode = $process->isSuccessful() ? 0 : 1;
+        }
+
+        return new CommandResult(
+            $exitCode,
+            $output,
+            $process->getErrorOutput(),
+            $process->getCommandLine(),
+        );
+    }
+
+    /**
      * Wait for the SSH service initialization, trying to perform a connection.
      *
      * @throws ProcessTimedOutException
